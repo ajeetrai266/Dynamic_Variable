@@ -1,0 +1,22 @@
+- hosts: all
+
+  vars_files:
+          - "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+ 
+  tasks:
+  - name: "Install HTTPD Software"
+    package: 
+        name: "{{ package_name }}"
+        state: present
+
+  - name: "Copy File in Root Directory"
+    copy:
+            dest: "{{ document_root }}ar.html"
+            content: "<h2> This is <h1> {{ ansible_facts['distribution'] }} O.S. "
+
+  - name: "Start the Service"
+    service:
+            name: "{{ service_name }}"
+            state: started
+            enabled: yes
+
